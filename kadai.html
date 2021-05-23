@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>jquery練習</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1 id="echo">jquery練習</h1>
+    <div class="result"></div>
+    <div class="rangeResult"></div>
+
+    <input type="color" id="color" />
+    <input type="range" id="range" value="30" min="1" max="100" />
+
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+
+    <script>
+      const can = document.getElementById("myCanvas");
+      const ctx = can.getContext("2d");
+
+      //色と太さの取得
+      $("#color").on("change", function () {
+        color = $(this).val();
+      });
+      $("#range").on("change", function () {
+        range = $(this).val();
+      });
+
+      //クリックの判定
+      let mouse = false;
+
+      //クリックした時の位置を取得
+      $("body").on("mousedown", function (e) {
+        mouse = true;
+        oldX = e.offsetX;
+        oldY = e.offsetY;
+      });
+
+      $("body").on("mousemove", function (e) {
+        if (mouse == true) {
+          newX = e.offsetX;
+          newY = e.offsetY;
+
+          ctx.beginPath();
+          ctx.strokeStyle = color;
+          ctx.lineWidth = range;
+          ctx.moveTo(oldX, oldY);
+          ctx.lineTo(newX, newY);
+          ctx.stroke();
+
+          oldX = newX;
+          oldY = newY;
+        }
+      });
+
+      //マウスアップ
+      $("body").on("mouseup", function () {
+        mouse = false;
+      });
+    </script>
+  </body>
+</html>
